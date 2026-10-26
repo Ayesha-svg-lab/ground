@@ -1,0 +1,1026 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>AquaFix Plumbing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: full-width dark 3D hero, then light service grid, booking form,
+   plumber profile, and a plumber dashboard in one column that stacks on phones. */
+:root {
+  --bg: #f4f8f9;
+  --surface: #ffffff;
+  --surface-2: #e9f1f3;
+  --ink: #0c1d24;
+  --muted: #4f6168;
+  --line: #d3dfe3;
+  --water: #0b7a8a;
+  --water-ink: #ffffff;
+  --copper: #b8611f;
+  --ok: #1d7a4a;
+  --warn: #9a6b00;
+  --bad: #b3261e;
+  --hero-bg: #062129;
+  --hero-fg: #e8f6f8;
+  --hero-muted: #9cc3cb;
+  --shadow: 0 18px 40px -22px rgba(6, 33, 41, 0.35);
+  --font-display: "Sora", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Manrope", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #071a20;
+    --surface: #0c2730;
+    --surface-2: #103540;
+    --ink: #e6f2f4;
+    --muted: #9fbcc3;
+    --line: #1d4450;
+    --water: #33b5c6;
+    --water-ink: #04161b;
+    --copper: #e8914f;
+    --ok: #5fd39a;
+    --warn: #f0c060;
+    --bad: #ff8a80;
+    --shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #071a20;
+  --surface: #0c2730;
+  --surface-2: #103540;
+  --ink: #e6f2f4;
+  --muted: #9fbcc3;
+  --line: #1d4450;
+  --water: #33b5c6;
+  --water-ink: #04161b;
+  --copper: #e8914f;
+  --ok: #5fd39a;
+  --warn: #f0c060;
+  --bad: #ff8a80;
+  --shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.7);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  overflow-x: hidden;
+}
+img { max-width: 100%; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.1rem, 6vw, 3.9rem); font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 700; letter-spacing: -0.01em; }
+h3 { font-size: 1.1rem; font-weight: 700; }
+p { margin: 0; }
+a { color: var(--water); }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; border-radius: 6px; }
+
+.wrap { max-width: 1140px; margin: 0 auto; }
+.eyebrow {
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--water);
+}
+.section { padding-block: 72px; }
+.section-head { display: grid; gap: 10px; margin-bottom: 30px; max-width: 640px; }
+.section-head p { color: var(--muted); }
+
+/* Header */
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  padding-inline: max(16px, env(safe-area-inset-left, 0px));
+}
+.topbar-in {
+  max-width: 1140px; margin: 0 auto; min-height: 64px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 800; text-decoration: none; color: var(--ink); }
+.logo {
+  width: 34px; height: 34px; border-radius: 10px; flex: none;
+  background: linear-gradient(145deg, #3fd0e0, var(--water) 55%, #064f5b);
+  box-shadow: inset 0 -4px 0 rgba(0,0,0,0.18), 0 6px 14px -6px var(--water);
+  position: relative;
+}
+.logo::after {
+  content: ""; position: absolute; left: 50%; top: 52%; width: 12px; height: 16px;
+  background: #fff; transform: translate(-50%, -50%); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  clip-path: polygon(50% 0, 100% 62%, 80% 100%, 20% 100%, 0 62%);
+}
+.nav { display: flex; gap: 18px; align-items: center; }
+.nav a { text-decoration: none; color: var(--muted); font-weight: 600; font-size: 0.95rem; }
+.nav a:hover { color: var(--ink); }
+.nav-hide { display: none; }
+@media (min-width: 760px) { .nav-hide { display: inline; } }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 46px; padding: 0 20px; border-radius: 999px; border: 0; cursor: pointer;
+  font-weight: 700; text-decoration: none; background: var(--water); color: var(--water-ink);
+  transition: transform .2s ease, box-shadow .2s ease, background .2s;
+  box-shadow: 0 10px 22px -12px var(--water);
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 16px 26px -12px var(--water); }
+.btn:active { transform: translateY(0); }
+.btn-ghost { background: transparent; color: var(--ink); box-shadow: none; border: 1.5px solid var(--line); }
+.btn-ghost:hover { box-shadow: none; border-color: var(--water); }
+.btn-sm { min-height: 36px; padding: 0 14px; font-size: 0.88rem; }
+.btn-copper { background: var(--copper); color: #fff; box-shadow: 0 10px 22px -12px var(--copper); }
+.btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; }
+
+/* 3D hero */
+.hero {
+  position: relative; overflow: hidden; border-radius: 28px;
+  background: var(--hero-bg); color: var(--hero-fg);
+  margin-top: 16px; isolation: isolate;
+}
+.hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+.hero-in {
+  display: grid; gap: 28px; align-items: center;
+  padding: 56px 24px; min-height: 520px;
+}
+@media (min-width: 900px) {
+  .hero-in { grid-template-columns: 1.1fr 0.9fr; padding: 72px 56px; }
+}
+.hero .eyebrow { color: #7fe3ef; }
+.hero p.lead { color: var(--hero-muted); font-size: 1.08rem; max-width: 46ch; margin-top: 16px; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.hero .btn-ghost { color: var(--hero-fg); border-color: #2b5a64; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 30px; max-width: 480px; }
+.stat { padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); }
+.stat b { display: block; font-family: var(--font-display); font-size: 1.5rem; }
+.stat span { font-size: 0.8rem; color: var(--hero-muted); }
+
+/* 3D pipe scene */
+.scene { position: relative; height: 340px; perspective: 900px; display: grid; place-items: center; }
+.rig { position: relative; width: 260px; height: 260px; transform-style: preserve-3d; animation: spin 16s linear infinite; }
+.ring {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 22px solid transparent;
+  background: linear-gradient(#0000, #0000) padding-box, conic-gradient(from 0deg, #1fb6c8, #7fe3ef, #0b7a8a, #1fb6c8) border-box;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  box-shadow: 0 0 40px rgba(51, 181, 198, 0.35);
+}
+.ring.r2 { inset: 30px; transform: rotateX(70deg); animation: spin 9s linear infinite reverse; }
+.ring.r3 { inset: 62px; transform: rotateY(70deg); animation: spin 12s linear infinite; }
+.core {
+  position: absolute; left: 50%; top: 50%; width: 74px; height: 92px;
+  transform: translate(-50%, -50%) translateZ(60px);
+  background: radial-gradient(circle at 35% 30%, #cffaff, #33b5c6 45%, #064f5b);
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  clip-path: polygon(50% 0, 92% 58%, 84% 84%, 50% 100%, 16% 84%, 8% 58%);
+  animation: bob 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 12px 18px rgba(51, 181, 198, 0.45));
+}
+.drops { position: absolute; inset: 0; pointer-events: none; }
+.drop {
+  position: absolute; width: 8px; height: 12px; background: #7fe3ef; opacity: 0.8;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  animation: fall 3.6s linear infinite;
+}
+@keyframes spin { from { transform: rotateX(18deg) rotateY(0deg); } to { transform: rotateX(18deg) rotateY(360deg); } }
+@keyframes bob { 0%,100% { transform: translate(-50%, -50%) translateZ(60px) translateY(0); } 50% { transform: translate(-50%, -50%) translateZ(60px) translateY(-14px); } }
+@keyframes fall {
+  0% { transform: translateY(-20px) scale(.9); opacity: 0; }
+  15% { opacity: .9; }
+  100% { transform: translateY(340px) scale(1); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rig, .ring.r2, .ring.r3, .core, .drop { animation: none !important; }
+}
+
+/* Cards */
+.grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .grid.cols-2 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { .grid.cols-3 { grid-template-columns: repeat(3, 1fr); } }
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 22px; box-shadow: var(--shadow); min-width: 0;
+}
+.tilt {
+  transform: perspective(800px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .25s ease, box-shadow .25s ease;
+  transform-style: preserve-3d;
+}
+.service { display: grid; gap: 10px; align-content: start; }
+.service .tag { font-size: 0.8rem; color: var(--muted); }
+.price { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; color: var(--copper); }
+.service .btn { justify-self: start; margin-top: 6px; }
+
+/* Forms */
+.form-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 680px) { .form-grid.two { grid-template-columns: 1fr 1fr; } .form-grid .full { grid-column: 1 / -1; } }
+label { display: grid; gap: 6px; font-weight: 600; font-size: 0.92rem; min-width: 0; }
+input, select, textarea {
+  width: 100%; min-height: 46px; padding: 10px 14px; border-radius: 12px;
+  border: 1.5px solid var(--line); background: var(--bg); color: var(--ink);
+}
+textarea { min-height: 84px; resize: vertical; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--water); box-shadow: 0 0 0 4px color-mix(in srgb, var(--water) 22%, transparent); }
+.field-err { color: var(--bad); font-size: 0.84rem; min-height: 1em; font-weight: 600; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.seg button {
+  min-height: 46px; border-radius: 12px; border: 1.5px solid var(--line);
+  background: var(--bg); cursor: pointer; font-weight: 700;
+}
+.seg button[aria-pressed="true"] { border-color: var(--water); background: color-mix(in srgb, var(--water) 16%, var(--bg)); color: var(--water); }
+.slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; }
+.slots button {
+  min-height: 42px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--bg);
+  cursor: pointer; font-weight: 600; font-size: 0.92rem;
+}
+.slots button[aria-pressed="true"] { background: var(--water); color: var(--water-ink); border-color: var(--water); }
+.slots button:disabled { opacity: .4; text-decoration: line-through; cursor: not-allowed; }
+.booking-wrap { display: grid; gap: 22px; }
+@media (min-width: 960px) { .booking-wrap { grid-template-columns: 1.4fr 1fr; align-items: start; } }
+.summary { display: grid; gap: 12px; }
+.summary .row { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px dashed var(--line); padding-bottom: 8px; }
+.summary .row span:first-child { color: var(--muted); }
+.summary .row span:last-child { font-weight: 700; text-align: right; overflow-wrap: anywhere; }
+.success {
+  border: 1.5px solid var(--ok); border-radius: var(--radius); padding: 20px;
+  background: color-mix(in srgb, var(--ok) 10%, var(--surface));
+}
+.success code { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--ok); }
+
+/* Profile */
+.profile { display: grid; gap: 22px; }
+@media (min-width: 880px) { .profile { grid-template-columns: 0.9fr 1.1fr; } }
+.avatar-card { position: relative; overflow: hidden; background: var(--hero-bg); color: var(--hero-fg); border-radius: 22px; padding: 28px; min-height: 320px; display: flex; flex-direction: column; justify-content: flex-end; }
+.avatar {
+  position: absolute; top: 26px; left: 50%; transform: translateX(-50%);
+  width: 130px; height: 130px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #7fe3ef, #0b7a8a 60%, #064f5b);
+  display: grid; place-items: center; font-family: var(--font-display); font-size: 2.6rem; font-weight: 800; color: #fff;
+  box-shadow: 0 0 0 8px rgba(127, 227, 239, 0.12), 0 24px 40px -18px #000;
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float { 0%,100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, -10px); } }
+@media (prefers-reduced-motion: reduce) { .avatar { animation: none; } }
+.avatar-card .meta { display: grid; gap: 4px; position: relative; }
+.avatar-card .meta span { color: var(--hero-muted); font-size: 0.94rem; }
+.facts { display: grid; gap: 10px; }
+.fact { display: grid; grid-template-columns: 110px 1fr; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.fact span:first-child { color: var(--muted); font-size: 0.92rem; }
+.fact span:last-child { font-weight: 600; overflow-wrap: anywhere; }
+.review { display: grid; gap: 6px; }
+.stars { color: var(--copper); letter-spacing: 2px; font-weight: 700; }
+.copy-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.copy-row code { font-family: var(--font-body); font-weight: 700; overflow-wrap: anywhere; }
+
+/* Dashboard */
+.dash-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+@media (min-width: 760px) { .dash-stats { grid-template-columns: repeat(4, 1fr); } }
+.dash-stats .card { padding: 16px; }
+.dash-stats b { display: block; font-family: var(--font-display); font-size: 1.8rem; }
+.dash-stats span { color: var(--muted); font-size: 0.85rem; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin: 22px 0 14px; }
+.toolbar select { width: auto; min-width: 180px; }
+.bk { display: grid; gap: 12px; }
+.bk-head { display: flex; justify-content: space-between; gap: 10px; align-items: start; flex-wrap: wrap; }
+.bk-id { font-family: var(--font-display); font-weight: 700; }
+.pill {
+  display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px;
+  font-size: 0.8rem; font-weight: 700; border: 1px solid currentColor; white-space: nowrap;
+}
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.pill.Pending { color: var(--warn); }
+.pill.Confirmed { color: var(--water); }
+.pill.Completed { color: var(--ok); }
+.pill.Cancelled { color: var(--bad); }
+.bk-grid { display: grid; gap: 8px; grid-template-columns: 1fr; font-size: 0.94rem; }
+@media (min-width: 700px) { .bk-grid { grid-template-columns: 1fr 1fr; } }
+.bk-grid b { color: var(--muted); font-weight: 600; margin-right: 6px; }
+.bk-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.empty {
+  border: 2px dashed var(--line); border-radius: var(--radius); padding: 28px; text-align: center; color: var(--muted);
+}
+.login { display: grid; gap: 14px; max-width: 360px; }
+.toast {
+  position: fixed; left: 50%; bottom: max(20px, env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 140%);
+  background: var(--ink); color: var(--bg); padding: 12px 18px; border-radius: 999px; font-weight: 700;
+  transition: transform .35s cubic-bezier(.2,.9,.3,1.2); z-index: 50; max-width: calc(100% - 32px);
+}
+.toast.show { transform: translate(-50%, 0); }
+.footer { padding-block: 40px 56px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.92rem; }
+.footer-in { display: flex; flex-wrap: wrap; gap: 14px; justify-content: space-between; }
+.note { font-size: 0.86rem; color: var(--muted); }
+.hidden-block[hidden] { display: none !important; }
+</style>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="#top"><span class="logo" aria-hidden="true"></span>AquaFix Plumbing</a>
+    <nav class="nav" aria-label="Main">
+      <a class="nav-hide" href="#services">Services</a>
+      <a class="nav-hide" href="#book">Book</a>
+      <a class="nav-hide" href="#plumber">About</a>
+      <a href="#dashboard">Plumber login</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top" class="wrap">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <canvas class="hero-canvas" id="waves" aria-hidden="true"></canvas>
+    <div class="hero-in">
+      <div>
+        <p class="eyebrow">Rawalpindi · Bahria Town · Chaklala</p>
+        <h1 id="hero-title" style="margin-top:12px">Leaks fixed. Water flowing again.</h1>
+        <p class="lead">Book a licensed plumber in a few taps. Pick a time, share your address, and get a confirmation with your booking ID. Same-day visits for leaks, blocked drains and geyser faults.</p>
+        <div class="hero-cta">
+          <a class="btn" href="#book">Book an appointment</a>
+          <a class="btn btn-ghost" href="#services">See services</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><b id="stat-jobs">1,240+</b><span>Jobs done</span></div>
+          <div class="stat"><b id="stat-rating">4.9</b><span>Average rating</span></div>
+          <div class="stat"><b id="stat-years">12</b><span>Years experience</span></div>
+        </div>
+      </div>
+      <div class="scene" aria-hidden="true">
+        <div class="rig">
+          <div class="ring"></div>
+          <div class="ring r2"></div>
+          <div class="ring r3"></div>
+          <div class="core"></div>
+        </div>
+        <div class="drops" id="drops"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="services" aria-labelledby="svc-title">
+    <div class="section-head">
+      <p class="eyebrow">Services</p>
+      <h2 id="svc-title">What we fix</h2>
+      <p>Fixed visit fees are shown below. Final price is confirmed on site before any work starts.</p>
+    </div>
+    <div class="grid cols-3" id="service-grid"></div>
+  </section>
+
+  <section class="section" id="book" aria-labelledby="book-title">
+    <div class="section-head">
+      <p class="eyebrow">Booking</p>
+      <h2 id="book-title">Book your visit</h2>
+      <p>Choose a single appointment, or hire the plumber for a multi-day job. Times are checked live so two clients cannot take the same slot.</p>
+    </div>
+    <div class="booking-wrap">
+      <form class="card" id="booking-form" novalidate>
+        <div class="form-grid two">
+          <div class="full">
+            <div class="seg" role="group" aria-label="Booking type">
+              <button type="button" id="type-appt" aria-pressed="true" data-type="appointment">Single appointment</button>
+              <button type="button" id="type-hire" aria-pressed="false" data-type="hire">Hire for a job</button>
+            </div>
+          </div>
+          <label>Full name
+            <input id="bk-name" name="name" autocomplete="name" placeholder="e.g. Sara Khan" required>
+            <span class="field-err" data-for="bk-name"></span>
+          </label>
+          <label>Mobile number
+            <input id="bk-phone" name="phone" type="tel" autocomplete="tel" placeholder="03XX XXXXXXX" required>
+            <span class="field-err" data-for="bk-phone"></span>
+          </label>
+          <label class="full">Service address
+            <input id="bk-address" name="address" autocomplete="street-address" placeholder="House/flat no., street, area, city" required>
+            <span class="field-err" data-for="bk-address"></span>
+          </label>
+          <label>Service needed
+            <select id="bk-service" name="service"></select>
+          </label>
+          <label id="lbl-days" hidden>Number of days
+            <input id="bk-days" name="days" type="number" min="1" max="60" value="2">
+            <span class="field-err" data-for="bk-days"></span>
+          </label>
+          <label>Preferred date
+            <input id="bk-date" name="date" type="date" required>
+            <span class="field-err" data-for="bk-date"></span>
+          </label>
+          <div class="full" style="display:grid;gap:8px">
+            <span style="font-weight:600;font-size:0.92rem">Time slot</span>
+            <div class="slots" id="slots" role="group" aria-label="Time slots"></div>
+            <span class="field-err" data-for="bk-time"></span>
+          </div>
+          <label class="full">Notes for the plumber (optional)
+            <textarea id="bk-notes" name="notes" placeholder="Where the leak is, gate code, pets, parking…"></textarea>
+          </label>
+          <div class="full" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between">
+            <p class="note">We will call to confirm. Visit fee is payable after the job.</p>
+            <button class="btn" type="submit">Confirm booking</button>
+          </div>
+        </div>
+      </form>
+
+      <aside style="display:grid;gap:16px">
+        <div class="card">
+          <h3>Booking summary</h3>
+          <div class="summary" id="summary" style="margin-top:12px"></div>
+        </div>
+        <div id="bk-result" class="success" hidden role="status" aria-live="polite"></div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section" id="plumber" aria-labelledby="pl-title">
+    <div class="section-head">
+      <p class="eyebrow">The plumber</p>
+      <h2 id="pl-title">Meet your plumber</h2>
+    </div>
+    <div class="profile">
+      <div class="avatar-card">
+        <div class="avatar" id="avatar" aria-hidden="true">TM</div>
+        <div class="meta">
+          <h3 id="pub-name" style="font-size:1.6rem"></h3>
+          <span id="pub-title"></span>
+          <span id="pub-area"></span>
+        </div>
+      </div>
+      <div style="display:grid;gap:16px">
+        <div class="card">
+          <div class="facts" id="facts"></div>
+        </div>
+        <div class="card" style="display:grid;gap:12px">
+          <h3>Client reviews</h3>
+          <p class="note">Sample reviews for illustration. Replace with real client reviews.</p>
+          <div id="reviews" style="display:grid;gap:14px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="dashboard" aria-labelledby="dash-title">
+    <div class="section-head">
+      <p class="eyebrow">Plumber dashboard</p>
+      <h2 id="dash-title">Bookings and business details</h2>
+      <p>Sign in with your PIN to see every booking, change its status and update your business details.</p>
+    </div>
+
+    <div id="pl-login" class="card login">
+      <label>Dashboard PIN
+        <input id="pin" type="password" inputmode="numeric" autocomplete="current-password" placeholder="Enter PIN">
+        <span class="field-err" id="pin-err"></span>
+      </label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" id="pin-btn" type="button">Open dashboard</button>
+      </div>
+      <p class="note">NOTE: Only For Plumber Login</p>
+    </div>
+
+    <div id="pl-panel" hidden style="display:grid;gap:22px">
+      <div class="dash-stats">
+        <div class="card"><b id="s-total">0</b><span>Total bookings</span></div>
+        <div class="card"><b id="s-pending">0</b><span>Pending</span></div>
+        <div class="card"><b id="s-today">0</b><span>Today</span></div>
+        <div class="card"><b id="s-revenue">Rs 0</b><span>Expected from confirmed</span></div>
+      </div>
+
+      <div>
+        <div class="toolbar">
+          <h3>All bookings</h3>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <select id="pl-filter" aria-label="Filter bookings">
+              <option value="All">All statuses</option>
+              <option value="Pending">Pending</option>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" id="pl-logout" type="button">Sign out</button>
+          </div>
+        </div>
+        <div id="pl-list" class="bk"></div>
+      </div>
+
+      <form class="card" id="profile-form" novalidate>
+        <h3>Business details</h3>
+        <p class="note" style="margin-top:4px">Everything here appears on your public page and in client confirmations.</p>
+        <div class="form-grid two" style="margin-top:16px">
+          <label>Business name <input id="pf-name"></label>
+          <label>Your name <input id="pf-plumber"></label>
+          <label>Title / trade <input id="pf-title"></label>
+          <label>Mobile number <input id="pf-phone" type="tel"></label>
+          <label>Email <input id="pf-email" type="email"></label>
+          <label>Working hours <input id="pf-hours"></label>
+          <label class="full">Shop / office address <input id="pf-address"></label>
+          <label class="full">Service areas <input id="pf-area"></label>
+          <label>Visit fee (Rs) <input id="pf-fee" type="number" min="0"></label>
+          <label>Rs per 1 US dollar <input id="pf-usd" type="number" min="1" step="0.01"></label>
+          <label>Years of experience <input id="pf-years" type="number" min="0"></label>
+          <label>Licence number <input id="pf-license"></label>
+          <label>Dashboard PIN (4+ digits) <input id="pf-pin" inputmode="numeric"></label>
+          <label class="full">About you <textarea id="pf-bio"></textarea></label>
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:18px">
+          <button class="btn" type="submit">Save details</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer wrap">
+  <div class="footer-in">
+    <span>AquaFix Plumbing · Rawalpindi</span>
+    <span>Demo site. Bookings are saved in this browser only.</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- storage (per-browser; wrapped so it never throws) ----------
+  var KEY = "aquafix-site-v1";
+  function seed() {
+    return {
+      profile: {
+        name: "AquaFix Plumbing",
+        plumber: "Tariq Mehmood",
+        title: "Master plumber · Licensed",
+        phone: "+923108638907",
+        email: "book@aquafix.example",
+        hours: "Mon–Sat, 8:00 AM – 8:00 PM",
+        address: "Shop 4, Main Murree Road, Rawalpindi",
+        area: "Rawalpindi, Bahria Town, Chaklala",
+        fee: 1500,
+        usdRate: 280,
+        years: 12,
+        license: "PHE-897GH3990",
+        pin: "1234",
+        bio: "Twelve years fixing leaks, geysers and drainage across Rawalpindi. I explain the fault before I start and quote the final price on site."
+      },
+      services: [
+        { id: "leak", name: "Leak repair", desc: "Find and fix hidden and visible leaks. Pipe, tap and joint work.", price: 1500, mins: 60 },
+        { id: "drain", name: "Drain unblocking", desc: "Kitchen, bathroom and main drain clearing with machine.", price: 2000, mins: 90 },
+        { id: "geyser", name: "Geyser service & install", desc: "Repair, descaling or new geyser installation with fittings.", price: 3500, mins: 120 },
+        { id: "bath", name: "Bathroom fitting", desc: "Full fitting of taps, basins, commodes and shower lines.", price: 8000, mins: 240 },
+        { id: "pump", name: "Water pump & tank", desc: "Motor pump repair, tank float valve and overhead tank lines.", price: 2500, mins: 90 },
+        { id: "emerg", name: "Emergency call-out", desc: "Burst pipe or flooding. Same-day visit when possible.", price: 3000, mins: 60 }
+      ],
+      bookings: [],
+      reviews: [
+        { name: "Sample: Hira K., Chaklala", stars: 5, text: "Arrived on time and fixed the geyser the same day. Clean work." },
+        { name: "Sample: Usman R., Bahria Town", stars: 5, text: "Found a hidden leak behind the wall quickly. Explained every step." },
+        { name: "Sample: Ayesha M., Satellite Town", stars: 4, text: "Good drain unblocking and fair price. Would call again." }
+      ]
+    };
+  }
+  function load() {
+    try {
+      var raw = window.localStorage.getItem(KEY);
+      if (!raw) return seed();
+      var d = JSON.parse(raw);
+      if (!d || !d.profile || !d.services) return seed();
+      return d;
+    } catch (e) { return seed(); }
+  }
+  function persist() {
+    try { window.localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* storage blocked: keep in memory */ }
+  }
+
+  var state = load();
+
+  // ---------- helpers ----------
+  function $(s) { return document.querySelector(s); }
+  function esc(v) {
+    return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function rs(n) {
+    var pkr = Number(n || 0);
+    var rate = Number(state.profile.usdRate) || 280;
+    var usd = pkr / rate;
+    var usdTxt = "$" + usd.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+    return "Rs " + pkr.toLocaleString("en-PK") + " (" + usdTxt + ")";
+  }
+  function toast(msg) {
+    var t = $("#toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { t.classList.remove("show"); }, 2600);
+  }
+  function todayISO() {
+    var d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  function fmtDate(iso) {
+    if (!iso) return "";
+    var p = iso.split("-");
+    var d = new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]));
+    return d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+  }
+  var SLOTS = ["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM"];
+
+  // ---------- public page ----------
+  function renderPublic() {
+    var p = state.profile;
+    $("#pub-name").textContent = p.plumber;
+    $("#pub-title").textContent = p.title;
+    $("#pub-area").textContent = "Serving " + p.area;
+    $("#avatar").textContent = p.plumber.split(" ").map(function (w) { return w[0]; }).join("").slice(0, 2).toUpperCase();
+    $("#stat-years").textContent = p.years;
+    $("#facts").innerHTML = [
+      ["Business", p.name],
+      ["Mobile", p.phone],
+      ["Email", p.email],
+      ["Office", p.address],
+      ["Hours", p.hours],
+      ["Visit fee", rs(p.fee) + " (final price on site)"],
+      ["Licence", p.license],
+      ["About", p.bio]
+    ].map(function (r) {
+      return '<div class="fact"><span>' + esc(r[0]) + '</span><span>' + esc(r[1]) + '</span></div>';
+    }).join("");
+    $("#reviews").innerHTML = state.reviews.map(function (r) {
+      var stars = "";
+      for (var i = 0; i < 5; i++) stars += i < r.stars ? "★" : "☆";
+      return '<div class="review"><span class="stars" aria-label="' + r.stars + ' of 5 stars">' + stars + '</span><b>' + esc(r.name) + '</b><span>' + esc(r.text) + '</span></div>';
+    }).join("");
+  }
+
+  function renderServices() {
+    $("#service-grid").innerHTML = state.services.map(function (s) {
+      return '<article class="card tilt service" data-tilt>' +
+        '<h3>' + esc(s.name) + '</h3>' +
+        '<p class="tag">' + esc(s.desc) + '</p>' +
+        '<div class="price">From ' + rs(s.price) + '</div>' +
+        '<p class="tag">About ' + s.mins + ' min on site</p>' +
+        '<a class="btn btn-ghost btn-sm" href="#book" data-pick="' + esc(s.id) + '">Book this</a>' +
+        '</article>';
+    }).join("");
+    var sel = $("#bk-service");
+    sel.innerHTML = state.services.map(function (s) {
+      return '<option value="' + esc(s.id) + '">' + esc(s.name) + ' (from ' + rs(s.price) + ')</option>';
+    }).join("");
+  }
+
+  // ---------- booking ----------
+  var bookingType = "appointment";
+  var chosenSlot = "";
+
+  function setType(t) {
+    bookingType = t;
+    $("#type-appt").setAttribute("aria-pressed", t === "appointment");
+    $("#type-hire").setAttribute("aria-pressed", t === "hire");
+    $("#lbl-days").hidden = t !== "hire";
+    renderSummary();
+  }
+
+  function slotTaken(date, slot) {
+    return state.bookings.some(function (b) {
+      return b.date === date && b.time === slot && b.status !== "Cancelled";
+    });
+  }
+
+  function renderSlots() {
+    var date = $("#bk-date").value;
+    var box = $("#slots");
+    box.innerHTML = SLOTS.map(function (s) {
+      var taken = date && slotTaken(date, s);
+      var pressed = s === chosenSlot && !taken ? "true" : "false";
+      return '<button type="button" data-slot="' + esc(s) + '" aria-pressed="' + pressed + '"' + (taken ? " disabled" : "") + '>' +
+        esc(s) + (taken ? " · booked" : "") + '</button>';
+    }).join("");
+    if (!date) box.insertAdjacentHTML("afterbegin", '<p class="note" style="grid-column:1/-1">Pick a date to see free times.</p>');
+  }
+
+  function formValues() {
+    var svc = state.services.find(function (s) { return s.id === $("#bk-service").value; }) || state.services[0];
+    return {
+      name: $("#bk-name").value.trim(),
+      phone: $("#bk-phone").value.trim(),
+      address: $("#bk-address").value.trim(),
+      service: svc,
+      days: Math.max(1, Number($("#bk-days").value) || 1),
+      date: $("#bk-date").value,
+      time: chosenSlot,
+      notes: $("#bk-notes").value.trim()
+    };
+  }
+
+  function renderSummary() {
+    var v = formValues();
+    var est = bookingType === "hire" ? v.service.price * v.days : v.service.price;
+    var rows = [
+      ["Type", bookingType === "hire" ? "Hire for " + v.days + " day(s)" : "Single appointment"],
+      ["Service", v.service.name],
+      ["Date", v.date ? fmtDate(v.date) : "Not chosen"],
+      ["Time", v.time || "Not chosen"],
+      ["Address", v.address || "Not entered"],
+      ["Estimate", rs(est) + (bookingType === "hire" ? " (per-day basis)" : "")]
+    ];
+    $("#summary").innerHTML = rows.map(function (r) {
+      return '<div class="row"><span>' + esc(r[0]) + '</span><span>' + esc(r[1]) + '</span></div>';
+    }).join("");
+  }
+
+  function showErr(id, msg) {
+    var el = document.querySelector('[data-for="' + id + '"]');
+    if (el) el.textContent = msg || "";
+  }
+
+  function validate(v) {
+    var ok = true;
+    showErr("bk-name", ""); showErr("bk-phone", ""); showErr("bk-address", "");
+    showErr("bk-date", ""); showErr("bk-time", ""); showErr("bk-days", "");
+    if (v.name.length < 2) { showErr("bk-name", "Enter your full name."); ok = false; }
+    if (!/^[0-9+()\-\s]{10,18}$/.test(v.phone)) { showErr("bk-phone", "Enter a valid mobile number."); ok = false; }
+    if (v.address.length < 8) { showErr("bk-address", "Enter a full address so we can find you."); ok = false; }
+    if (!v.date) { showErr("bk-date", "Pick a date."); ok = false; }
+    else if (v.date < todayISO()) { showErr("bk-date", "Pick today or a later date."); ok = false; }
+    if (!v.time) { showErr("bk-time", "Pick a time slot."); ok = false; }
+    else if (slotTaken(v.date, v.time)) { showErr("bk-time", "That slot was just booked. Pick another."); ok = false; }
+    return ok;
+  }
+
+  function newId() {
+    return "AF-" + Date.now().toString(36).slice(-4).toUpperCase() + Math.random().toString(36).slice(2, 5).toUpperCase();
+  }
+
+  function onBookingSubmit(e) {
+    e.preventDefault();
+    var v = formValues();
+    if (!validate(v)) { toast("Please fix the highlighted fields."); return; }
+    var b = {
+      id: newId(),
+      type: bookingType,
+      status: "Pending",
+      client: v.name,
+      phone: v.phone,
+      address: v.address,
+      service: v.service.name,
+      price: v.service.price,
+      days: bookingType === "hire" ? v.days : 1,
+      date: v.date,
+      time: v.time,
+      notes: v.notes,
+      created: new Date().toISOString()
+    };
+    state.bookings.push(b);
+    persist();
+
+    var res = $("#bk-result");
+    res.hidden = false;
+    res.innerHTML = '<h3>Booking received</h3>' +
+      '<p style="margin-top:6px">Your booking ID is <code>' + esc(b.id) + '</code>. ' +
+      esc(state.profile.plumber) + ' will call on ' + esc(state.profile.phone) + ' to confirm.</p>';
+    res.scrollIntoView({ behavior: "smooth", block: "center" });
+
+    $("#booking-form").reset();
+    chosenSlot = "";
+    setType("appointment");
+    renderSlots();
+    renderSummary();
+    renderDashboard();
+    toast("Booking " + b.id + " confirmed");
+  }
+
+  // ---------- dashboard ----------
+  function renderDashboard() {
+    var bs = state.bookings;
+    var today = todayISO();
+    $("#s-total").textContent = bs.length;
+    $("#s-pending").textContent = bs.filter(function (b) { return b.status === "Pending"; }).length;
+    $("#s-today").textContent = bs.filter(function (b) { return b.date === today && b.status !== "Cancelled"; }).length;
+    $("#s-revenue").textContent = rs(bs.filter(function (b) { return b.status === "Confirmed"; })
+      .reduce(function (a, b) { return a + b.price * b.days; }, 0));
+
+    var f = $("#pl-filter").value;
+    var list = bs.filter(function (b) { return f === "All" || b.status === f; })
+      .sort(function (a, b) { return (a.date + a.time) < (b.date + b.time) ? -1 : 1; });
+
+    $("#pl-list").innerHTML = list.length ? list.map(function (b) {
+      var acts = [];
+      if (b.status === "Pending") acts.push('<button class="btn btn-sm" data-act="Confirmed" data-id="' + esc(b.id) + '">Confirm</button>');
+      if (b.status === "Confirmed") acts.push('<button class="btn btn-sm" data-act="Completed" data-id="' + esc(b.id) + '">Mark done</button>');
+      if (b.status !== "Cancelled" && b.status !== "Completed") acts.push('<button class="btn btn-ghost btn-sm" data-act="Cancelled" data-id="' + esc(b.id) + '">Cancel</button>');
+      return '<article class="card bk">' +
+        '<div class="bk-head"><div><span class="bk-id">' + esc(b.id) + '</span> · <span>' + esc(b.service) + (b.type === "hire" ? " (hire, " + b.days + " days)" : "") + '</span></div>' +
+        '<span class="pill ' + esc(b.status) + '">' + esc(b.status) + '</span></div>' +
+        '<div class="bk-grid">' +
+        '<div><b>Client</b>' + esc(b.client) + '</div>' +
+        '<div><b>Mobile</b>' + esc(b.phone) + '</div>' +
+        '<div><b>When</b>' + esc(fmtDate(b.date)) + ' at ' + esc(b.time) + '</div>' +
+        '<div><b>Price</b>' + esc(rs(b.price * b.days)) + '</div>' +
+        '<div style="grid-column:1/-1"><b>Address</b>' + esc(b.address) + '</div>' +
+        (b.notes ? '<div style="grid-column:1/-1"><b>Notes</b>' + esc(b.notes) + '</div>' : '') +
+        '</div>' +
+        (acts.length ? '<div class="bk-actions">' + acts.join("") + '</div>' : '') +
+        '</article>';
+    }).join("") : '<div class="empty">No bookings for this filter yet. New bookings from the form above appear here.</div>';
+  }
+
+  function setStatus(id, status) {
+    var b = state.bookings.find(function (x) { return x.id === id; });
+    if (!b) return;
+    b.status = status;
+    persist();
+    renderDashboard();
+    renderSlots();
+    toast(b.id + " marked " + status.toLowerCase());
+  }
+
+  function fillProfileForm() {
+    var p = state.profile;
+    $("#pf-name").value = p.name;
+    $("#pf-plumber").value = p.plumber;
+    $("#pf-title").value = p.title;
+    $("#pf-phone").value = p.phone;
+    $("#pf-email").value = p.email;
+    $("#pf-hours").value = p.hours;
+    $("#pf-address").value = p.address;
+    $("#pf-area").value = p.area;
+    $("#pf-fee").value = p.fee;
+    $("#pf-usd").value = p.usdRate || 280;
+    $("#pf-years").value = p.years;
+    $("#pf-license").value = p.license;
+    $("#pf-pin").value = p.pin;
+    $("#pf-bio").value = p.bio;
+  }
+
+  function saveProfile(e) {
+    e.preventDefault();
+    var pin = $("#pf-pin").value.trim();
+    if (!/^[0-9]{4,}$/.test(pin)) { toast("PIN must be at least 4 digits."); return; }
+    var p = state.profile;
+    p.name = $("#pf-name").value.trim() || p.name;
+    p.plumber = $("#pf-plumber").value.trim() || p.plumber;
+    p.title = $("#pf-title").value.trim();
+    p.phone = $("#pf-phone").value.trim();
+    p.email = $("#pf-email").value.trim();
+    p.hours = $("#pf-hours").value.trim();
+    p.address = $("#pf-address").value.trim();
+    p.area = $("#pf-area").value.trim();
+    p.fee = Math.max(0, Number($("#pf-fee").value) || 0);
+    p.usdRate = Math.max(1, Number($("#pf-usd").value) || 280);
+    p.years = Math.max(0, Number($("#pf-years").value) || 0);
+    p.license = $("#pf-license").value.trim();
+    p.pin = pin;
+    p.bio = $("#pf-bio").value.trim();
+    persist();
+    renderPublic();
+    $("#stat-years").textContent = p.years;
+    toast("Details saved");
+  }
+
+  function signIn() {
+    var v = $("#pin").value.trim();
+    if (v === state.profile.pin) {
+      $("#pin-err").textContent = "";
+      $("#pl-login").hidden = true;
+      $("#pl-panel").hidden = false;
+      fillProfileForm();
+      renderDashboard();
+      $("#pin").value = "";
+    } else {
+      $("#pin-err").textContent = "Wrong PIN. Try again.";
+    }
+  }
+
+  // ---------- wiring ----------
+  function wire() {
+    document.addEventListener("click", function (e) {
+      var t = e.target;
+      var slot = t.closest && t.closest("[data-slot]");
+      if (slot && !slot.disabled) {
+        chosenSlot = slot.getAttribute("data-slot");
+        renderSlots();
+        renderSummary();
+        return;
+      }
+      var act = t.closest && t.closest("[data-act]");
+      if (act) { setStatus(act.getAttribute("data-id"), act.getAttribute("data-act")); return; }
+      var pick = t.closest && t.closest("[data-pick]");
+      if (pick) { $("#bk-service").value = pick.getAttribute("data-pick"); renderSummary(); }
+    });
+
+    $("#type-appt").addEventListener("click", function () { setType("appointment"); });
+    $("#type-hire").addEventListener("click", function () { setType("hire"); });
+    ["bk-service", "bk-days", "bk-name", "bk-phone", "bk-address", "bk-notes"].forEach(function (id) {
+      $("#" + id).addEventListener("input", renderSummary);
+      $("#" + id).addEventListener("change", renderSummary);
+    });
+    $("#bk-date").addEventListener("change", function () { chosenSlot = ""; renderSlots(); renderSummary(); });
+    $("#booking-form").addEventListener("submit", onBookingSubmit);
+
+    $("#pin-btn").addEventListener("click", signIn);
+    $("#pin").addEventListener("keydown", function (e) { if (e.key === "Enter") signIn(); });
+    $("#pl-logout").addEventListener("click", function () {
+      $("#pl-panel").hidden = true;
+      $("#pl-login").hidden = false;
+      toast("Signed out");
+    });
+    $("#pl-filter").addEventListener("change", renderDashboard);
+    $("#profile-form").addEventListener("submit", saveProfile);
+
+    // 3D tilt on cards
+    document.addEventListener("pointermove", function (e) {
+      var card = e.target.closest && e.target.closest("[data-tilt]");
+      if (!card || e.pointerType === "touch") return;
+      var r = card.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.setProperty("--ry", (x * 10).toFixed(2) + "deg");
+      card.style.setProperty("--rx", (-y * 10).toFixed(2) + "deg");
+    });
+    document.addEventListener("pointerout", function (e) {
+      var card = e.target.closest && e.target.closest("[data-tilt]");
+      if (card && !card.contains(e.relatedTarget)) {
+        card.style.setProperty("--rx", "0deg");
+        card.style.setProperty("--ry", "0deg");
+      }
+    });
+  }
+
+  // ---------- hero animations ----------
+  function startWaves() {
+    var c = $("#waves");
+    if (!c || !c.getContext) return;
+    var ctx = c.getContext("2d");
+    var w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function size() {
+      var r = c.getBoundingClientRect();
+      w = r.width; h = r.height;
+      c.width = Math.round(w * dpr); c.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    function draw(t) {
+      ctx.clearRect(0, 0, w, h);
+      for (var k = 0; k < 4; k++) {
+        ctx.beginPath();
+        var base = h * (0.55 + k * 0.12);
+        for (var x = 0; x <= w; x += 6) {
+          var y = base + Math.sin(x * 0.012 + t * 0.0008 * (k + 1) + k) * (18 + k * 6)
+                       + Math.sin(x * 0.005 - t * 0.0005) * 14;
+          if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath();
+        ctx.fillStyle = "rgba(51, 181, 198," + (0.05 + k * 0.03).toFixed(3) + ")";
+        ctx.fill();
+      }
+      for (var i = 0; i < 26; i++) {
+        var px = (i * 97 + t * 0.02 * (i % 5 + 1)) % (w + 40) - 20;
+        var py = h * 0.2 + Math.sin(i * 1.7 + t * 0.001) * h * 0.25 + (i % 7) * 12;
+        ctx.beginPath();
+        ctx.arc(px, py, 1.2 + (i % 3) * 0.8, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(127, 227, 239, 0.45)";
+        ctx.fill();
+      }
+    }
+    size();
+    window.addEventListener("resize", size);
+    if (reduce) { draw(0); return; }
+    function loop(t) { draw(t); requestAnimationFrame(loop); }
+    requestAnimationFrame(loop);
+  }
+
+  function makeDrops() {
+    var box = $("#drops");
+    if (!box) return;
+    var html = "";
+    for (var i = 0; i < 9; i++) {
+      html += '<span class="drop" style="left:' + (8 + i * 10) + '%;animation-delay:' + (i * 0.4).toFixed(1) + 's;animation-duration:' + (3 + (i % 3) * 0.6).toFixed(1) + 's"></span>';
+    }
+    box.innerHTML = html;
+  }
+
+  // ---------- boot ----------
+  function init() {
+    $("#bk-date").min = todayISO();
+    $("#stat-jobs").textContent = state.profile.jobs || "1,240+";
+    renderServices();
+    renderPublic();
+    renderSlots();
+    renderSummary();
+    setType("appointment");
+    makeDrops();
+    startWaves();
+    wire();
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+</script>
+
+</body></html>
